@@ -1,3 +1,4 @@
+'use strict';
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -10,18 +11,15 @@ router.get('/', function(req, res, next) {
 
 module.exports = router;
 
-
-
-
 var T = new Twit({
-  consumer_key: process.env.CONSUMER_KEY,
-  consumer_secret: process.env.CONSUMER_SECRET,
-  access_token: process.env.ACCESS_TOKEN,
-  access_token_secret: process.env.ACCESS_TOKEN_SECRET
-})
+  consumer_key: 'EhXGStDB56VzhYWSH75AHp3nP',
+  consumer_secret: 'PTsOhDqYpOJCLWYoRc9JhK1bTlIrWSNqhHs0eqs2YZBcOaft1k',
+  access_token: '43787829-ucm2tn89Y1Mg25tPv6s9iGqG1clbvTrUs8CjnE4yy',
+  access_token_secret: 'WvnS6UIGv9dXPnNxZ4kijxvFkHcCYDBlHVi5ZxV9MCZ4I'
+});
 
-var stream = T.stream('statuses/filter', { track: '#growingupblack' });
-
+console.log(T);
+var stream = T.stream('statuses/filter', { track: 'angular' });
 
 var userObj = {};
 stream.on('tweet', function (tweet) {
@@ -32,6 +30,9 @@ stream.on('tweet', function (tweet) {
     userObj[user] = 1;
   }
   console.log("USEROBJ:::", userObj);
+  console.log(tweet);
+  console.log('**********', tweet.user.location);
+  console.log('##########', tweet.text);
 });
 
 var afterOneWeek = function(){
