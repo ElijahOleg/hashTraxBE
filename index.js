@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 var Twit = require('twit');
 
 mongoose.connect(process.env.MONGOLAB_URI);
+var tweetSchema = new mongoose.Schema({}, { strict: false });
+var Tweet = mongoose.model('Tweet', tweetSchema);
 
 // var SearchSchema = new mongoose.Schema({
 //   hash: {type: String, required: true},
@@ -30,14 +32,16 @@ var stream = T.stream('statuses/filter', { track: 'angular' });
 
 var userObj = {};
 stream.on('tweet', function (tweet) {
-  var user = tweet.user.name;
-  if(userObj[user]){
-    userObj[user] += 1;
-  }else{
-    userObj[user] = 1;
-  }
-  console.log("USEROBJ:::", userObj);
-  console.log(tweet);
-  console.log('**********', tweet.user.location);
+  // var user = tweet.user.name;
+  // if(userObj[user]){
+  //   userObj[user] += 1;
+  // }else{
+  //   userObj[user] = 1;
+  // }
+  // console.log("USEROBJ:::", userObj);
+  // console.log(tweet);
+  // console.log('**********', tweet.user.location);
   console.log('##########', tweet.text);
+  var mongoTweet = new Tweet(tweet);
+  mongoTweet.save();
 });
