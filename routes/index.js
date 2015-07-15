@@ -32,22 +32,3 @@ var T = new Twit({
 var stream = T.stream('statuses/filter', { track: 'angular' });
 
 var userObj = {};
-
-
-
-// stream.on('tweet', function (tweet) {
-//   var user = tweet.user.name;
-//   if(userObj[user]){
-//     userObj[user] += 1;
-//   }else{
-//     userObj[user] = 1;
-//   }
-//   console.log("USEROBJ:::", userObj);
-//   console.log(tweet);
-//   console.log('**********', tweet.user.location);
-//   console.log('##########', tweet.text);
-// });
-//
-// var afterOneWeek = function(){
-//
-// };
