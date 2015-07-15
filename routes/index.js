@@ -6,13 +6,24 @@ var Twit = require('twit');
 
 mongoose.connect(process.env.MONGO_URL);
 
-// TweetSchema = new mongoose.Schema({
-//   userName: String,
-//   count: Number,
-//   location: String,
-//   tweet: [],
-//
-// })
+SearchSchema = new mongoose.Schema({
+  hash: {type: String, required: true},
+  tweets: [{type: mongoose.Schema.ObjectId, ref: 'Tweet'}]
+});
+
+TweetSchema = new mongoose.Schema({
+  body: String,
+  location: String,
+  userName: String,
+  createdAt: {type: String, default: new Date().toLocaleString()},
+  sentiment: String
+});
+
+UserSchema = new mongoose.Schema({
+  userEmail: String,
+  password: String,
+  tweetsTracked: [{ype:mongoose.Schema.ObjectId, ref: 'Search'}]
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
