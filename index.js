@@ -1,29 +1,23 @@
 'use strict';
-var express = require('express');
-var router = express.Router();
 var mongoose = require('mongoose');
 var Twit = require('twit');
 
-mongoose.connect(process.env.MONGO_URL);
+mongoose.connect(process.env.MONGOLAB_URI);
 
-SearchSchema = new mongoose.Schema({
-  hash: {type: String, required: true},
-  tweets: [{type: mongoose.Schema.ObjectId, ref: 'Tweet'}]
-});
+// var SearchSchema = new mongoose.Schema({
+//   hash: {type: String, required: true},
+//   tweets: [{type: mongoose.Schema.ObjectId, ref: 'Tweet'}]
+// });
 
+// var Search = mongoose.model("Search", SearchSchema);
 
-UserSchema = new mongoose.Schema({
-  userEmail: String,
-  password: String,
-  tweetsTracked: [{ype:mongoose.Schema.ObjectId, ref: 'Search'}]
-});
+// var UserSchema = new mongoose.Schema({
+//   userEmail: String,
+//   password: String,
+//   tweetsTracked: [{ype:mongoose.Schema.ObjectId, ref: 'Search'}]
+// });
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-module.exports = router;
+// var  = mongoose.model("Search", SearchSchema);
 
 var T = new Twit({
   consumer_key: process.env.CONSUMER_KEY,
@@ -32,7 +26,6 @@ var T = new Twit({
   access_token_secret: process.env.ACCESS_TOKEN_SECRET
 });
 
-console.log(T);
 var stream = T.stream('statuses/filter', { track: 'angular' });
 
 var userObj = {};
@@ -48,6 +41,3 @@ stream.on('tweet', function (tweet) {
   console.log('**********', tweet.user.location);
   console.log('##########', tweet.text);
 });
-// var afterOneWeek = function(){
-//   userArray
-// }
