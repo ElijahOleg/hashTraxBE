@@ -4,7 +4,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Twit = require('twit');
 
-mongoose.connect(process.env.MONGO_URL);
+// mongoose.connect(process.env.MONGOLAB_URI);
 
 // TweetSchema = new mongoose.Schema({
 //   userName: String,
