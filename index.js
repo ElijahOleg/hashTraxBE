@@ -6,42 +6,36 @@ mongoose.connect(process.env.MONGOLAB_URI);
 var tweetSchema = new mongoose.Schema({}, { strict: false });
 var Tweet = mongoose.model('Tweet', tweetSchema);
 
-// var SearchSchema = new mongoose.Schema({
-//   hash: {type: String, required: true},
-//   tweets: [{type: mongoose.Schema.ObjectId, ref: 'Tweet'}]
-// });
-
-// var Search = mongoose.model("Search", SearchSchema);
-
-// var UserSchema = new mongoose.Schema({
-//   userEmail: String,
-//   password: String,
-//   tweetsTracked: [{ype:mongoose.Schema.ObjectId, ref: 'Search'}]
-// });
-
-// var  = mongoose.model("Search", SearchSchema);
-
-var T = new Twit({
-  consumer_key: process.env.CONSUMER_KEY,
-  consumer_secret: process.env.CONSUMER_SECRET,
-  access_token: process.env.ACCESS_TOKEN,
-  access_token_secret: process.env.ACCESS_TOKEN_SECRET
+var userSchema = new mongoose.Schema({
+  email: String,
+  password: String,
+  searchTerms: [{
+    term: { type: String, required: true },
+    tweetIds: [ { type: mongoose.Schema.ObjectId, ref: 'Tweet' } ]
+  }]
 });
 
-var stream = T.stream('statuses/filter', { track: 'angular' });
+var User = mongoose.model("User", userSchema);
 
-var userObj = {};
-stream.on('tweet', function (tweet) {
-  // var user = tweet.user.name;
-  // if(userObj[user]){
-  //   userObj[user] += 1;
-  // }else{
-  //   userObj[user] = 1;
-  // }
-  // console.log("USEROBJ:::", userObj);
-  // console.log(tweet);
-  // console.log('**********', tweet.user.location);
-  console.log('##########', tweet.text);
-  var mongoTweet = new Tweet(tweet);
-  mongoTweet.save();
+// User.create({ email: 'test1@test.com', searchTerms: [{ term: 'angular' }, { term: 'emberjs' }] });
+
+// var T = new Twit({
+//   consumer_key: process.env.CONSUMER_KEY,
+//   consumer_secret: process.env.CONSUMER_SECRET,
+//   access_token: process.env.ACCESS_TOKEN,
+//   access_token_secret: process.env.ACCESS_TOKEN_SECRET
+// });
+
+User.find({}, function(err, users) {
+  console.log(users);
 });
+
+// loop over all search terms for all users and for each do the following:
+//
+  // var stream = T.stream('statuses/filter', { track: 'angular' });
+
+  // stream.on('tweet', function (tweet) {
+  //   console.log('##########', tweet.text);
+  //   var mongoTweet = new Tweet(tweet);
+  //   mongoTweet.save();
+  // });
