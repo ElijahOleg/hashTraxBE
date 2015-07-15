@@ -11,13 +11,6 @@ SearchSchema = new mongoose.Schema({
   tweets: [{type: mongoose.Schema.ObjectId, ref: 'Tweet'}]
 });
 
-TweetSchema = new mongoose.Schema({
-  body: String,
-  location: String,
-  userName: String,
-  createdAt: {type: String, default: new Date().toLocaleString()},
-  sentiment: String
-});
 
 UserSchema = new mongoose.Schema({
   userEmail: String,
@@ -42,11 +35,19 @@ var T = new Twit({
 console.log(T);
 var stream = T.stream('statuses/filter', { track: 'angular' });
 
-var userArray = [];
+var userObj = {};
 stream.on('tweet', function (tweet) {
   var user = tweet.user.name;
-  userArray.push(user);
+  if(userObj[user]){
+    userObj[user] += 1;
+  }else{
+    userObj[user] = 1;
+  }
+  console.log("USEROBJ:::", userObj);
   console.log(tweet);
   console.log('**********', tweet.user.location);
   console.log('##########', tweet.text);
 });
+// var afterOneWeek = function(){
+//   userArray
+// }
