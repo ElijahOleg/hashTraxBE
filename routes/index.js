@@ -34,7 +34,7 @@ router.get('/statistics', function(req, res, next) {
   var previousDay = currentTime - dayLength;
   Tweet.find({time_num: {$gte: previousDay}}).exec(function(err, tweets) {
     if(err){console.log(err);}
-    result = {
+    var result = {
       numberOfTweets: tweets.length,
       avgSentiment: averageSentiment(tweets)
     };
