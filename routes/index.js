@@ -27,16 +27,35 @@ router.post('/register', function(req, res, next) {
     email: email,
     userHash: userHash
   };
+  saveUser.searchTerms.term.push(req.body.term);
   res.json(saveUser);
+});
+
+router.get('/dashboard/:hash', function(req, res, next) {
+  User.find({userHash: req.params.hash}, function(err, user) {
+    if (err) {
+      res.status(404);
+    }
+    else if (!user) {
+      res.status(404);
+      res.redirect('/');
+    }
+    Tweet.find({'_id': {$in: user.searchTerms.tweetIds}}, function(err, tweets) {
+      if (err) {
+        res.status(404);
+      }
+      console.log(tweets);
+      res.json(tweets);
+    });
+  });
 });
 
 var averageSentiment = function(fullTweets) {
   var total = 0;
-  console.log(fullTweets);
   fullTweets.forEach(function(e, i) {
-    console.log(e.sentiment);
     total += e.sentiment.comparative;
   });
+  console.log(total / fullTweets.length);
   return total / fullTweets.length;
 };
 router.get('/statistics', function(req, res, next) {
@@ -45,7 +64,8 @@ router.get('/statistics', function(req, res, next) {
   var dayLength = 86400000;
   var previousDay = currentTime - dayLength;
   Tweet.find({time_num: {$gte: previousDay}}).exec(function(err, tweets) {
-    if(err){console.log(err);}
+    if(err) {
+      console.log(err);}
     var results = {
       numberOfTweets: tweets.length
       // avgSentiment: averageSentiment(tweets)
