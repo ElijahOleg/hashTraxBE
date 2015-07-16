@@ -25,7 +25,7 @@ router.get('/statistics', function(req, res, next) {
   var currentTime = new Date().getTime();
   var dayLength = 86400000;
   var previousDay = currentTime - dayLength;
-  Tweet.find({timestamp_ms: {$gte: previousDay}}, function(err, tweets) {
+  Tweet.find({}}, function(err, tweets) {
     console.log(tweets);
     res.json(tweets);
   })
