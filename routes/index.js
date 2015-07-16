@@ -26,4 +26,9 @@ router.get('/statistics', function(req, res, next) {
   // res.json data
 });
 
+router.get('/recordService', function(req, res, next) {
+  console.log(req.body);
+  res.json('This is something');
+});
+
 module.exports = router;
