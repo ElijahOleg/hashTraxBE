@@ -26,9 +26,9 @@ router.get('/statistics', function(req, res, next) {
   // res.json data
 });
 
-router.get('/recordService', function(req, res, next) {
+router.post('/theMoney', function(req, res, next) {
   console.log(req.body);
-  res.json('This is something');
+  res.json(req.body);
 });
 
 module.exports = router;
