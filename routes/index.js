@@ -29,7 +29,8 @@ router.post('/register', function(req, res, next) {
 });
 
 router.get('/dashboard/:hash', function(req, res, next) {
-  User.find({userHash: req.params.hash}, function(err, user) {
+  console.log(req.params);
+  User.findOne({userHash: req.params.hash}, function(err, user) {
     if (err) {
       res.status(404);
     }
@@ -37,11 +38,12 @@ router.get('/dashboard/:hash', function(req, res, next) {
       res.status(404);
       res.redirect('/');
     }
-    Tweet.find({'_id': {$in: user.searchTerms.tweetIds}}, function(err, tweets) {
+    console.log(user.searchTerms[0].tweetIds);
+    Tweet.find({'_id': {$in: user.searchTerms[0].tweetIds}}, function(err, tweets) {
+      console.log(err, tweets);
       if (err) {
         res.status(404);
       }
-      console.log(tweets);
       res.json(tweets);
     });
   });
