@@ -24,6 +24,7 @@ var averageSentiment = function(fullTweets) {
   var total = 0;
   console.log(fullTweets);
   fullTweets.forEach(function(e, i) {
+    console.log(e.sentiment);
     total += e.sentiment.comparative;
   });
   return total / fullTweets.length;
