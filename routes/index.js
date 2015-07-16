@@ -20,4 +20,10 @@ router.get('/data', function(req, res, next) {
   // return;
 });
 
+router.get('/statistics', function(req, res, next) {
+  // Tweet.find => within last 24 hours
+  // analyze data
+  // res.json data
+});
+
 module.exports = router;
