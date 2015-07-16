@@ -36,7 +36,7 @@ router.get('/statistics', function(req, res, next) {
     if(err){console.log(err);}
     result = {
       numberOfTweets: tweets.length,
-      avgSentiment: averageSentiment(teets)
+      avgSentiment: averageSentiment(tweets)
     };
     res.json(results);
   });
