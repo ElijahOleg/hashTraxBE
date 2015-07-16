@@ -23,7 +23,7 @@ router.get('/data', function(req, res, next) {
 var averageSentiment = function(fullTweets) {
   var total = 0;
   fullTweets.forEach(function(e, i) {
-    total += e;
+    total += e.sentiment.comparative;
   });
   return total / fullTweets.length;
 };
