@@ -6,9 +6,6 @@ var Twit = require('twit');
 var Tweet = require('../models/tweet.js');
 var User = require('../models/user.js');
 var md5 = require('md5');
-console.log("Tweet:", Tweet);
-console.log("User:", User);
-
 
 router.get('/data', function(req, res, next) {
   console.log("data hit");
@@ -27,7 +24,7 @@ router.post('/register', function(req, res, next) {
     email: email,
     userHash: userHash
   };
-  saveUser.searchTerms.term.push(req.body.term);
+  saveUser.searchTerms.term.push(req.body.terms);
   res.json(saveUser);
 });
 
@@ -78,8 +75,23 @@ router.get('/statistics', function(req, res, next) {
 });
 
 router.post('/theMoney', function(req, res, next) {
-  console.log(req.body);
-  res.json(req.body);
+  var email = req.body.email;
+  var userHash = md5(email);
+  var saveUser = {
+    email: email,
+    userHash: userHash
+  };
+  saveUser.searchTerms = [];
+  saveUser.searchTerms[0] = {};
+  saveUser.searchTerms[0].term = req.body.searchTerm;
+  var newUser = new User(saveUser);
+  newUser.save(function(err, user) {
+    if (err) {
+      res.status(400).json({ error: "Validation failed" });
+    }
+    res.json(user);
+  });
+  // res.json(req.body);
 });
 
 module.exports = router;
