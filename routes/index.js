@@ -20,15 +20,25 @@ router.get('/data', function(req, res, next) {
   // return;
 });
 
+var averageSentiment = function(fullTweets) {
+  var total = 0;
+  fullTweets.forEach(function(e, i) {
+    total += e;
+  });
+  return total / fullTweets.length;
+};
 router.get('/statistics', function(req, res, next) {
   // pass in the search term
   var currentTime = new Date().getTime();
   var dayLength = 86400000;
   var previousDay = currentTime - dayLength;
-  Tweet.find({time_num: {$gte: previousDay}}).limit(10).exec(function(err, tweets) {
+  Tweet.find({time_num: {$gte: previousDay}}).exec(function(err, tweets) {
     if(err){console.log(err);}
-    console.log(tweets);
-    res.json(tweets);
+    result = {
+      numberOfTweets: tweets.length,
+      avgSentiment: averageSentiment(teets)
+    };
+    res.json(results);
   });
   // Tweet.find => within last 24 hours
   // analyze data
