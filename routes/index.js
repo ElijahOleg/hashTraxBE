@@ -22,6 +22,7 @@ router.get('/data', function(req, res, next) {
 
 var averageSentiment = function(fullTweets) {
   var total = 0;
+  console.log(fullTweets);
   fullTweets.forEach(function(e, i) {
     total += e.sentiment.comparative;
   });
