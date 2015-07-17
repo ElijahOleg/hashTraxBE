@@ -6,6 +6,9 @@ var Twit = require('twit');
 var Tweet = require('../models/tweet.js');
 var User = require('../models/user.js');
 var md5 = require('md5');
+var api_key = process.env.MAILGUN_KEY;
+var domain = process.env.MAILGUN_DOMAIN;
+var mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
 
 router.get('/data', function(req, res, next) {
   console.log("data hit");
@@ -16,16 +19,6 @@ router.get('/data', function(req, res, next) {
     res.json(tweets);
   });
   // return;
-});
-router.post('/register', function(req, res, next) {
-  var email = req.body.email;
-  var userHash = md5(email);
-  var saveUser = {
-    email: email,
-    userHash: userHash
-  };
-  saveUser.searchTerms.term.push(req.body.terms);
-  res.json(saveUser);
 });
 
 router.get('/dashboard/:hash', function(req, res, next) {
@@ -79,10 +72,18 @@ router.get('/statistics', function(req, res, next) {
 router.post('/theMoney', function(req, res, next) {
   var email = req.body.email;
   var userHash = md5(email);
+  var data = {
+    from: 'Excited User <no-reply@hashtrax.us>',
+    to: email,
+    subject: 'Thanks for signing up to HashTraxxx!',
+    text: 'View your dashboard at http://hashtrackus.s3-website-us-west-1.amazonaws.com/#!/' + userHash
+  };
+
   var saveUser = {
     email: email,
     userHash: userHash
   };
+
   saveUser.searchTerms = [];
   saveUser.searchTerms[0] = {};
   saveUser.searchTerms[0].term = req.body.searchTerm;
@@ -91,9 +92,14 @@ router.post('/theMoney', function(req, res, next) {
     if (err) {
       res.status(400).json({ error: "Validation failed" });
     }
-    res.json(user);
+    mailgun.messages().send(data, function (error, body) {
+      if(error){
+        console.log({ error: error });
+        res.status(500).json({ error: error });
+      }
+      res.json(user);
+    });
   });
-  // res.json(req.body);
 });
 
 module.exports = router;
