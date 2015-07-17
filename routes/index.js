@@ -9,6 +9,7 @@ var md5 = require('md5');
 var api_key = process.env.MAILGUN_KEY;
 var domain = process.env.MAILGUN_DOMAIN;
 var mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
+var dataProcessing = require('../dataProcessing');
 
 router.get('/data', function(req, res, next) {
   console.log("data hit");
@@ -53,7 +54,7 @@ router.get('/statistics', function(req, res, next) {
       console.log(err);}
     var results = {
       numberOfTweets: tweets.length
-      // avgSentiment: averageSentiment(tweets)
+      avgSentiment: dataProcessing.sentimentOverTime(tweets)
     };
     res.json(results);
   });
