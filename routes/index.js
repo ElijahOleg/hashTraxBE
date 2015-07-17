@@ -42,14 +42,7 @@ router.get('/dashboard/:hash', function(req, res, next) {
   });
 });
 
-var averageSentiment = function(fullTweets) {
-  var total = 0;
-  fullTweets.forEach(function(e, i) {
-    total += e.sentiment.comparative;
-  });
-  console.log(total / fullTweets.length);
-  return total / fullTweets.length;
-};
+
 router.get('/statistics', function(req, res, next) {
   // pass in the search term
   var currentTime = new Date().getTime();
